@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+   <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Your app title -->
+    <title>Travel Pal</title>
+
+    <!-- This template defaults to the iOS CSS theme. To support both iOS and material design themes, see the Framework7 Tutorial at the link below:
+        http://www.idangero.us/framework7/tutorials/maintain-both-ios-and-material-themes-in-single-app.html
+     -->
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="lib\bootstrap\css\bootstrap.min.css">
+    <link rel="stylesheet" href="lib\bootstrap\css\cover.css">
+    <link rel="stylesheet" href="css\font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Arima+Madurai:300,400,500|Berkshire+Swash|Leckerli+One|Sacramento|Satisfy|Sofia" rel="stylesheet">
+</head>
+
+<body onload="tryingFile()">
+    <!-- Status bar overlay for full screen mode (PhoneGap) -->
+    <div class="statusbar-overlay"></div>
+
+    <!-- Panels overlay
+    <div class="panel-overlay"></div>
+    Left panel with reveal effect
+    <div class="panel panel-left panel-reveal">
+        <div class="content-block">
+            <ul>
+                <li><a href="#tab-1" data-route-tab-id="tab-1">Home</a></li>
+                <li><a href="#">Weather</a></li>
+                <li><a href="#">Converter</a></li>    
+                <li><a href="#">My History</a></li>   
+              </ul>
+         </div>
+        </div>
+    </div>
+
+     Views -->
+    <div class="views">
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+            <!-- Top Navbar-->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+                    <div class="left">Travel Pal</div>
+                    <!--<div class="right">
+                        <a href="#" class="link icon-only open-panel">
+                          <i class="icon icon-bars"></i>
+                        </a>
+                      </div>-->
+                </div>
+            </div>
+            <!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+            <div class="toolbar tabbar tabbar-labels toolbar-bottom">
+              <div class="toolbar-inner">
+                <a href="#tab-1" data-toggle="tab" class="tab-link tab-link-active nav-link active">
+                  <!-- Different icons for iOS and MD themes -->
+                  Home
+                  <!-- Label text 
+                  <span class="tabbar-label">Inbox</span>-->
+                </a>
+                <a href="#tab-2" class="tab-link nav-link">
+                  Converter
+                  <!--<span class="tabbar-label">Calendar</span>-->
+                </a>
+                <a href="#tab-3" class="tab-link nav-link">
+                  My Trips</i>
+                </a>
+              </div>
+            </div>
+            <!-- Bottom Toolbar-->
+            <!-- Tabs -->
+            <div class="tabs">
+              <!-- First tab, active -->
+              <div class="page-content tab tab-active" id="tab-1">
+                <div class="block">
+                  <!-- Your main view, should have "view-main" class -->
+                      <section class="jumbotron text-center">
+                          <h1 class="cover-heading">Welcome to <span id="city"></span></h1>
+                          <div class="container">
+                            <p class="lead text-muted"> <div id="openCage"></div></p>
+                            <div class="container">
+                              <figure class="icons">
+                              <canvas  class="icon-weather" id="set-icon" width="128" height="128"></canvas>
+                              </figure> 
+                              <div id="getWeather"></div>
+                            </div>
+                          </div>
+                      </section>
+                </div>
+              </div>
+              <!-- Second tab -->
+              <div class="page-content tab" id="tab-2">
+                  <div class="block">
+                    <section class="jumbotron text-center">
+                      <div class="container">
+                        <p><h2>The currency according to <br/>
+                          your location is <span id="currency">
+                        </span></h2>
+                        </p>
+                        <p>
+                          <input input type="text" placeholder="USD to your Currency" class="input-line full-width" type="number" id="input"> </input>
+                        </P>
+                        <p>
+                            <button class="ghost-round full-width" onclick="dollarToCurrency()">Convert</button>
+                        </p>
+                        <p>
+                          <div id="result"> Your conversion is..</div>
+                        </p>
+                        <p>
+                            <input input type="text" placeholder="Your currency to USD" class="input-line full-width" type="number"  id="inputCurrency"></input>
+                        </p>
+                        <p>
+                            <button class="ghost-round full-width" onclick="currencyToDollar()">Convert</button>
+                        </p>
+                        <p><div id="result2"> Your conversion is.. </div></p>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              <!-- Fourth tab -->
+              <div class="page-content tab" id="tab-3">
+                <div class="block">
+                  <section class="jumbotron text-center">
+                    <h1 class="cover-heading">My Trips:</h1>
+                    <div class="container">
+                      <p> 
+                        <button  class="ghost-round full-width" id="checkTrip" onclick="showTripDetail()">Check your trip info</button>
+                        <div class ="output" id="displayData"></div>
+                        <div id="map"></div>
+                      </p>
+                    
+                      <p> 
+                        <button class="ghost-round full-width" id="write" onclick="saveTrip()">Save your Trips</button>
+                        <div class ="output" id="saved"></div>
+                      </p>
+
+                      <p> 
+                        <button class="ghost-round full-width" id="clear" onclick="deleteTrip()">Delete History</button>
+                        <div class ="output" id="historyRemove"></div>
+                      </p>  
+                    </div>
+                  </section>                 
+                 
+                </div>
+              </div>
+              
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/my-app.js"></script>
+
+    <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApFPNQ2WxbEueUXMJBPHjLenlPnFo68ls&callback=initMap">
+    </script>
+</body>
+
+</html>
